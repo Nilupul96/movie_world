@@ -1,7 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/bloc/movies_bloc.dart';
 import 'package:movie_world/models/movie_model.dart';
+import 'package:movie_world/models/trending_movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/ui/screens/movie_list_screen.dart';
 import 'package:movie_world/utils/styles.dart';
@@ -14,13 +17,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<TrendingMovieModel> _trendingMovieList = [];
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
+    getTrendingMovies();
     bloc.fetchPopularMovies(1);
     // bloc.fetchLatestMovies(1);
     bloc.fetchTopRatedMovies(1);
     bloc.fetchUpComingMovies(1);
+  }
+
+  getTrendingMovies() async {
+    final repo = Repository();
+    var response = await repo.getTrendingMovieList(1);
+    _trendingMovieList.add(response);
+    print(_trendingMovieList.length);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -29,19 +45,31 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: DefaultDarkColor,
         appBar: AppBar(backgroundColor: DefaultDarkColor, elevation: 0),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: ListView(
-            children: [
-              _menuItem(
-                "Popular Movies",
-                bloc.allPopularMovies,
-              ),
-              _menuItem("Top Rated Movies", bloc.allTopRatedMovies),
-              _menuItem("Upcoming Movies", bloc.allUpComingMovies),
-              // _menuItem("latest movies", bloc.allLatestMovies),
-            ],
-          ),
-        ));
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: ListView(
+              children: [
+                const Text(
+                  "Trending movies",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                _isLoading ? const SizedBox() : _trendingMoviesTile(),
+                _menuItem(
+                  "Popular Movies",
+                  bloc.allPopularMovies,
+                ),
+
+                _menuItem("Top Rated Movies", bloc.allTopRatedMovies),
+                _menuItem("Upcoming Movies", bloc.allUpComingMovies),
+                // _menuItem("latest movies", bloc.allLatestMovies),
+              ],
+            )));
   }
 
   Widget _menuItem(String title, stream) {
@@ -59,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title,
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
               GestureDetector(
@@ -73,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   "See all",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold),
                 ),
               )
@@ -124,6 +152,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   }))
         ],
       ),
+    );
+  }
+
+  Widget _trendingMoviesTile() {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 400,
+        aspectRatio: 16 / 9,
+        viewportFraction: 0.8,
+        initialPage: 0,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: true,
+        autoPlayInterval: const Duration(seconds: 2),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        enlargeCenterPage: true,
+        scrollDirection: Axis.horizontal,
+      ),
+      items: _trendingMovieList[0].results!.map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MovieDetailsScreen(
+                        id: i.id!,
+                      ))),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      'https://image.tmdb.org/t/p/w185' + i.posterPath!,
+                      fit: BoxFit.cover,
+                    )),
+              ),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 }
