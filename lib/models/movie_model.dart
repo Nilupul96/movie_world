@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-PopularMoviesModel popularMoviesModelFromJson(String str) =>
-    PopularMoviesModel.fromJson(json.decode(str));
+MovieModel popularMoviesModelFromJson(String str) =>
+    MovieModel.fromJson(json.decode(str));
 
-String popularMoviesModelToJson(PopularMoviesModel data) =>
+String popularMoviesModelToJson(MovieModel data) =>
     json.encode(data.toJson());
 
-class PopularMoviesModel {
-  PopularMoviesModel({
+class MovieModel {
+  MovieModel({
     this.page,
     this.results,
   });
@@ -15,8 +15,8 @@ class PopularMoviesModel {
   int? page;
   List<Result>? results;
 
-  factory PopularMoviesModel.fromJson(Map<String, dynamic> json) =>
-      PopularMoviesModel(
+  factory MovieModel.fromJson(Map<String, dynamic> json) =>
+      MovieModel(
         page: json["page"],
         results:
             List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
