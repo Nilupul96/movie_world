@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/movie_model.dart';
 import 'package:movie_world/utils/const.dart';
 
@@ -47,6 +48,17 @@ class MovieApiProvider {
       return MovieModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load latest movies');
+    }
+  }
+
+  Future<MovieDetailsModel> fetchMovieDetails(int id) async {
+    final response =
+        await client.get(Uri.parse(baseUrl + "movie/$id?api_key=$apiKey"));
+
+    if (response.statusCode == 200) {
+      return MovieDetailsModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load movie details');
     }
   }
 }

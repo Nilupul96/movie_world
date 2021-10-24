@@ -15,7 +15,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
   bool _isListLoading = false;
   bool _pageEnd = false;
   var stream;
-  int? page;
+  int? page = 1;
   @override
   void initState() {
     super.initState();
@@ -25,7 +25,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
   getMovieList(int page) async {
     if (widget.movieType == "Popular Movies") {
       stream = bloc.allPopularMovies;
-      await bloc.fetchTopRatedMovies(page);
+      await bloc.fetchPopularMovies(page);
     } else if (widget.movieType == "Top Rated Movies") {
       stream = bloc.allTopRatedMovies;
       await bloc.fetchTopRatedMovies(page);
@@ -45,6 +45,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
       appBar: AppBar(
         backgroundColor: DefaultDarkColor,
         title: Text(widget.movieType),
+        elevation: 0,
       ),
       body: NotificationListener<ScrollNotification>(
           onNotification: (scrollInfo) {
@@ -77,6 +78,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
     return ListView(
       children: [
         GridView.builder(
+            physics: const ClampingScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data!.results!.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

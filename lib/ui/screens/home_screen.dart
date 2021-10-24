@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_world/bloc/movies_bloc.dart';
 import 'package:movie_world/models/movie_model.dart';
+import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/ui/screens/movie_list_screen.dart';
 import 'package:movie_world/utils/styles.dart';
 
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: DefaultDarkColor,
-        appBar: AppBar(),
+        appBar: AppBar(backgroundColor: DefaultDarkColor, elevation: 0),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: ListView(
@@ -44,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _menuItem(String title, stream) {
-    return Container(
-      height: 220,
+    return SizedBox(
+      height: 280.h,
       child: Column(
         children: [
           SizedBox(
@@ -87,20 +88,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, AsyncSnapshot<MovieModel> snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: 6,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(7.0),
-                                child: Image.network(
-                                  'https://image.tmdb.org/t/p/w185' +
-                                      snapshot
-                                          .data!.results![index].posterPath!,
-                                  fit: BoxFit.cover,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => MovieDetailsScreen(
+                                          id: snapshot
+                                              .data!.results![index].id!,
+                                        )));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  child: Image.network(
+                                    'https://image.tmdb.org/t/p/w185' +
+                                        snapshot
+                                            .data!.results![index].posterPath!,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             );

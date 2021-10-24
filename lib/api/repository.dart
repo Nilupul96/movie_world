@@ -1,4 +1,5 @@
 import 'package:movie_world/api/api_provider.dart';
+import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/movie_model.dart';
 
 class Repository {
@@ -15,4 +16,7 @@ class Repository {
 
   Future<MovieModel> getUpComingMovies(int page) =>
       movieApiProvider.fetchUpComingMovieList(page);
+
+  Future<MovieDetailsModel> getMovieDetails(int id) =>
+      movieApiProvider.fetchMovieDetails(id);
 }
