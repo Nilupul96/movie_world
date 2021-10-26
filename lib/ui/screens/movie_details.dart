@@ -146,6 +146,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       child: Container(
         padding: EdgeInsets.all(10.0.w),
         decoration: BoxDecoration(
+          color:Color(0xff24243b),
             border: Border.all(color: Colors.lightBlueAccent),
             borderRadius: BorderRadius.circular(10)),
         child: ReadMoreText(

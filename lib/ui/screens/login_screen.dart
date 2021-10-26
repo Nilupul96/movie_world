@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_world/ui/screens/base_screen.dart';
+import 'package:movie_world/ui/screens/home_screen.dart';
+import 'package:movie_world/ui/screens/register_screen.dart';
 import 'package:movie_world/ui/widgets/text_field.dart';
 import 'package:movie_world/utils/styles.dart';
 
@@ -62,8 +65,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7.0)),
                       padding: const EdgeInsets.all(10),
-                      primary: Color(0xffe93f3f)),
-                  onPressed: () {},
+                      primary: const Color(0xffe93f3f)),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => BaseScreen()));
+                  },
                   child: const Text("Log in",
                       style: TextStyle(
                         fontSize: 24.0,
@@ -84,7 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 17.sp, color: Colors.grey),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RegisterScreen()));
+                    },
                     child: Text(
                       "Register",
                       style: TextStyle(

@@ -37,6 +37,7 @@ class MoviesBloc {
   dispose() {
     _popularMoviesFetcher.close();
     _topRatedMoviesFetcher.close();
+    _upComingMoviesFetcher.close();
   }
 }
 

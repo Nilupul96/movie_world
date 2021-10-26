@@ -36,6 +36,7 @@ class MovieApiProvider {
         Uri.parse(baseUrl + "movie/upcoming?api_key=$apiKey" + "&page=$page"));
 
     if (response.statusCode == 200) {
+      print(response.body);
       return MovieModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load upComing movies');

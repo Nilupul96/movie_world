@@ -23,17 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getTrendingMovies();
+    bloc.fetchUpComingMovies(1);
     bloc.fetchPopularMovies(1);
     // bloc.fetchLatestMovies(1);
     bloc.fetchTopRatedMovies(1);
-    bloc.fetchUpComingMovies(1);
   }
 
   getTrendingMovies() async {
     final repo = Repository();
     var response = await repo.getTrendingMovieList(1);
     _trendingMovieList.add(response);
-    print(_trendingMovieList.length);
     setState(() {
       _isLoading = false;
     });
@@ -43,7 +42,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: DefaultDarkColor,
-        appBar: AppBar(backgroundColor: DefaultDarkColor, elevation: 0),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          titleSpacing: 20.w,
+          title: const Text(
+            "Home",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: DefaultDarkColor,
+          elevation: 0,
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ))
+          ],
+        ),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: ListView(
@@ -62,11 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 _isLoading ? const SizedBox() : _trendingMoviesTile(),
                 _menuItem(
                   "Popular Movies",
-                  bloc.allPopularMovies,
+                  bloc.allUpComingMovies,
                 ),
-
                 _menuItem("Top Rated Movies", bloc.allTopRatedMovies),
-                _menuItem("Upcoming Movies", bloc.allUpComingMovies),
+                _menuItem("Upcoming Movies", bloc.allPopularMovies),
                 // _menuItem("latest movies", bloc.allLatestMovies),
               ],
             )));
