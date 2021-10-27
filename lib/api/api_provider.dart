@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:movie_world/models/actor_details_model.dart';
 import 'package:movie_world/models/cast_model.dart';
 import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/movie_model.dart';
@@ -142,6 +143,17 @@ class MovieApiProvider {
 
     if (response.statusCode == 200) {
       return SimilarMovieModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
+
+  Future<ActorDetailsModel> fetchActorDetails(int id) async {
+    final response =
+        await client.get(Uri.parse(baseUrl + "/person/$id?api_key=$apiKey"));
+
+    if (response.statusCode == 200) {
+      return ActorDetailsModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load movie details');
     }

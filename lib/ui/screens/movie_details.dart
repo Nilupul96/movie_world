@@ -8,6 +8,7 @@ import 'package:movie_world/bloc/movie_details_bloc.dart';
 import 'package:movie_world/models/cast_model.dart';
 import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/similar_movie_model.dart';
+import 'package:movie_world/ui/screens/actor_details_screen.dart';
 import 'package:movie_world/utils/styles.dart';
 import 'package:readmore/readmore.dart';
 
@@ -184,7 +185,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 Expanded(
                                   child: Text(similarMovieList[index].title!,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 11, color: Colors.white)),
                                 )
                               ],
@@ -274,8 +275,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 itemBuilder: (context, int index) {
-                  return _castTile(snapshot.data!.cast![index].originalName!,
-                      snapshot.data!.cast![index].profilePath!);
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ActorDetailsScreen(
+                              actor: snapshot.data!.cast![index],
+                            ))),
+                    child: _castTile(snapshot.data!.cast![index].originalName!,
+                        snapshot.data!.cast![index].profilePath!),
+                  );
                 });
           } else if (snapshot.hasError) {
             return const Center(child: Text("No data"));
