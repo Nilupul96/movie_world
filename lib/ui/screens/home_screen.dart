@@ -25,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     getTrendingMovies();
     bloc.fetchUpComingMovies(1);
     bloc.fetchPopularMovies(1);
-    // bloc.fetchLatestMovies(1);
     bloc.fetchTopRatedMovies(1);
   }
 
@@ -36,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _isLoading = false;
     });
+    bloc.fetchUpComingMovies(1);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
   }
 
   @override
@@ -54,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.search,
                   color: Colors.white,
                 ))
@@ -78,10 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 _isLoading ? const SizedBox() : _trendingMoviesTile(),
                 _menuItem(
                   "Popular Movies",
-                  bloc.allUpComingMovies,
+                  bloc.allPopularMovies,
                 ),
                 _menuItem("Top Rated Movies", bloc.allTopRatedMovies),
-                _menuItem("Upcoming Movies", bloc.allPopularMovies),
+                _menuItem("Upcoming Movies", bloc.allUpComingMovies),
                 // _menuItem("latest movies", bloc.allLatestMovies),
               ],
             )));
@@ -129,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: StreamBuilder(
                   stream: stream,
                   builder: (context, AsyncSnapshot<MovieModel> snapshot) {
+                    print(snapshot.connectionState);
                     if (snapshot.hasData) {
                       return ListView.builder(
                           physics: const ClampingScrollPhysics(),
@@ -163,7 +170,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text("no data"),
                       );
                     }
-                    return const CircularProgressIndicator();
+                    bloc.fetchUpComingMovies(1);
+                    return SizedBox(
+                        height: 50,
+                        width: 50.h,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ));
                   }))
         ],
       ),

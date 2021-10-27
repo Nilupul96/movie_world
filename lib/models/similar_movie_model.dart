@@ -13,13 +13,13 @@ class SimilarMovieModel {
   });
 
   int? page;
-  List<Result>? results;
+  List<SimilarMovieResult>? results;
 
   factory SimilarMovieModel.fromJson(Map<String, dynamic> json) =>
       SimilarMovieModel(
         page: json["page"],
         results:
-            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+            List<SimilarMovieResult>.from(json["results"].map((x) => SimilarMovieResult.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -28,8 +28,8 @@ class SimilarMovieModel {
       };
 }
 
-class Result {
-  Result({
+class SimilarMovieResult {
+  SimilarMovieResult({
     this.backdropPath,
     this.id,
     this.title,
@@ -49,7 +49,7 @@ class Result {
   String? posterPath;
   DateTime? releaseDate;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory SimilarMovieResult.fromJson(Map<String, dynamic> json) => SimilarMovieResult(
         backdropPath: json["backdrop_path"],
         id: json["id"],
         title: json["title"],

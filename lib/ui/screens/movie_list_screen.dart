@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/bloc/movies_bloc.dart';
 import 'package:movie_world/models/movie_model.dart';
+import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class MovieListScreen extends StatefulWidget {
@@ -12,9 +14,11 @@ class MovieListScreen extends StatefulWidget {
 }
 
 class _MovieListScreenState extends State<MovieListScreen> {
+  List<Result> _movieList = [];
+
   bool _isListLoading = false;
   bool _pageEnd = false;
-  var stream;
+
   int? page = 1;
   @override
   void initState() {
@@ -23,16 +27,19 @@ class _MovieListScreenState extends State<MovieListScreen> {
   }
 
   getMovieList(int page) async {
+    final _repository = Repository();
+    var response;
     if (widget.movieType == "Popular Movies") {
-      stream = bloc.allPopularMovies;
-      await bloc.fetchPopularMovies(page);
+      response = await _repository.getPopularMovies(page);
     } else if (widget.movieType == "Top Rated Movies") {
-      stream = bloc.allTopRatedMovies;
-      await bloc.fetchTopRatedMovies(page);
+      response = await _repository.getTopRatedMovies(page);
     } else if (widget.movieType == "Upcoming Movies") {
-      stream = bloc.allUpComingMovies;
-      await bloc.fetchUpComingMovies(page);
+      response = await _repository.getUpComingMovies(page);
     }
+    response.results!.forEach((element) {
+      _movieList.add(element);
+    });
+    print(_movieList.length);
     setState(() {
       _isListLoading = false;
     });
@@ -41,62 +48,59 @@ class _MovieListScreenState extends State<MovieListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DefaultDarkColor,
-      appBar: AppBar(
         backgroundColor: DefaultDarkColor,
-        title: Text(widget.movieType),
-        elevation: 0,
-      ),
-      body: NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) {
-            if (!_isListLoading &&
-                scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent) {
-              if (!_pageEnd) {
-                _isListLoading = true;
-                page = page! + 1;
-                getMovieList(page!);
+        appBar: AppBar(
+          backgroundColor: DefaultDarkColor,
+          title: Text(widget.movieType),
+          elevation: 0,
+        ),
+        body: NotificationListener<ScrollNotification>(
+            onNotification: (scrollInfo) {
+              if (!_isListLoading &&
+                  scrollInfo.metrics.pixels ==
+                      scrollInfo.metrics.maxScrollExtent) {
+                if (!_pageEnd) {
+                  _isListLoading = true;
+                  page = page! + 1;
+                  getMovieList(page!);
+                }
               }
-            }
-            return true;
-          },
-          child: StreamBuilder(
-            stream: stream,
-            builder: (context, AsyncSnapshot<MovieModel> snapshot) {
-              if (snapshot.hasData) {
-                return _buildList(snapshot);
-              } else if (snapshot.hasError) {
-                return const Center(child: Text("No data"));
-              }
-              return const Center(child: CircularProgressIndicator());
+              return true;
             },
-          )),
-    );
+            child: _buildList()));
   }
 
-  Widget _buildList(AsyncSnapshot<MovieModel> snapshot) {
+  Widget _buildList() {
     return ListView(
       children: [
         GridView.builder(
             physics: const ClampingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: snapshot.data!.results!.length,
+            itemCount: _movieList.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
+                childAspectRatio: 9 / 14, crossAxisCount: 2),
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(7.0),
-                  child: Image.network(
-                    'https://image.tmdb.org/t/p/w185' +
-                        snapshot.data!.results![index].posterPath!,
-                    fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MovieDetailsScreen(
+                            id: _movieList[index].id!,
+                          ))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(7.0),
+                    child: Image.network(
+                      'https://image.tmdb.org/t/p/w185' +
+                          _movieList[index].posterPath!,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               );
             }),
-        _isListLoading ? const CircularProgressIndicator() : const SizedBox()
+        _isListLoading
+            ? const Center(child: CircularProgressIndicator())
+            : const SizedBox()
       ],
     );
   }

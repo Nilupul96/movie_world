@@ -30,13 +30,16 @@ class _BaseScreenState extends State<BaseScreen> {
       backgroundColor: DefaultDarkColor,
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xff24243b),
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.lightBlueAccent,
         onTap: onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Trending"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.trending_up), label: "Trending"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "profile")
         ],
       ),

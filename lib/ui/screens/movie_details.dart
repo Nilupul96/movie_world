@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/bloc/movie_cast_bloc.dart';
 import 'package:movie_world/bloc/movie_details_bloc.dart';
 import 'package:movie_world/models/cast_model.dart';
 import 'package:movie_world/models/movie_details_model.dart';
+import 'package:movie_world/models/similar_movie_model.dart';
 import 'package:movie_world/utils/styles.dart';
 import 'package:readmore/readmore.dart';
 
@@ -18,18 +20,32 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  List<SimilarMovieResult> similarMovieList = [];
+  bool isSimilarMoviesLoading = true;
   @override
   void initState() {
     super.initState();
     detailsBloc.fetchMovieDetails(widget.id);
     castBloc.fetchMovieCast(widget.id);
+    getSimilarMovies(widget.id);
+  }
+
+  getSimilarMovies(int id) async {
+    final _repository = Repository();
+    var response = await _repository.getSimilarMovieList(id);
+    response.results!.forEach((element) {
+      similarMovieList.add(element);
+    });
+    print(similarMovieList.length);
+    setState(() {
+      isSimilarMoviesLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: DefaultDarkColor,
-        appBar: AppBar(backgroundColor: DefaultDarkColor, elevation: 0),
         body: StreamBuilder(
           stream: detailsBloc.movieDetails,
           builder: (context, AsyncSnapshot<MovieDetailsModel> snapshot) {
@@ -44,56 +60,141 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Widget _buildBody(AsyncSnapshot<MovieDetailsModel> snapshot) {
-    return ListView(
+    return Stack(
       children: [
-        SizedBox(
-          height: 300.h,
-          child: Image.network(
-            'https://image.tmdb.org/t/p/w780' + snapshot.data!.backdropPath!,
-            fit: BoxFit.cover,
-          ),
+        ListView(
+          children: [
+            SizedBox(
+              height: 280.h,
+              child: Image.network(
+                'https://image.tmdb.org/t/p/w780' +
+                    snapshot.data!.backdropPath!,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Text(
+                snapshot.data!.title! +
+                    " (" +
+                    snapshot.data!.releaseDate!.year.toString() +
+                    ")",
+                style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            _rating(snapshot.data!.voteAverage!),
+            SizedBox(
+              height: 10.h,
+            ),
+            _generList(snapshot.data!.genres!),
+            SizedBox(
+              height: 15.h,
+            ),
+            _discription(snapshot.data!.overview!),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.0),
+              child: Text(
+                "cast",
+                style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
+            _castList(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.0),
+              child: Text(
+                "Similar movies",
+                style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ),
+            _buildSimilarMovieList(),
+            SizedBox(
+              height: 30.h,
+            )
+          ],
         ),
-        SizedBox(
-          height: 15.h,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Text(
-            snapshot.data!.title! +
-                " (" +
-                snapshot.data!.releaseDate!.year.toString() +
-                ")",
-            style: TextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
-          ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        _rating(snapshot.data!.voteAverage!),
-        SizedBox(
-          height: 10.h,
-        ),
-        _generList(snapshot.data!.genres!),
-        SizedBox(
-          height: 15.h,
-        ),
-        _discription(snapshot.data!.overview!),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.0),
-          child: Text(
-            "cast",
-            style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
-          ),
-        ),
-        _castList()
+        Positioned(
+            top: 20.h,
+            left: 0.w,
+            child: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 30.h,
+                ))),
       ],
     );
+  }
+
+  Widget _buildSimilarMovieList() {
+    return isSimilarMoviesLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : similarMovieList.isNotEmpty
+            ? Container(
+                height: 200.h,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, int index) {
+                      return GestureDetector(
+                        onTap: () =>
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MovieDetailsScreen(
+                                      id: similarMovieList[index].id!,
+                                    ))),
+                        child: Container(
+                          width: 120.w,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  child: SizedBox(
+                                    width: 120.w,
+                                    height: 150.h,
+                                    child: Image.network(
+                                        'https://image.tmdb.org/t/p/w780' +
+                                            similarMovieList[index]
+                                                .posterPath!),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Expanded(
+                                  child: Text(similarMovieList[index].title!,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 11, color: Colors.white)),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              )
+            : Center(child: Text("No similar Movies"));
   }
 
   Widget _rating(double rate) {
@@ -146,7 +247,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       child: Container(
         padding: EdgeInsets.all(10.0.w),
         decoration: BoxDecoration(
-          color:Color(0xff24243b),
+            color: Color(0xff24243b),
             border: Border.all(color: Colors.lightBlueAccent),
             borderRadius: BorderRadius.circular(10)),
         child: ReadMoreText(

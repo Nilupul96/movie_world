@@ -2,6 +2,7 @@ import 'package:movie_world/api/api_provider.dart';
 import 'package:movie_world/models/cast_model.dart';
 import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/movie_model.dart';
+import 'package:movie_world/models/similar_movie_model.dart';
 import 'package:movie_world/models/trending_movie_model.dart';
 
 class Repository {
@@ -24,4 +25,6 @@ class Repository {
   Future<CastModel> getMovieCast(int id) => movieApiProvider.fetchMovieCast(id);
   Future<TrendingMovieModel> getTrendingMovieList(int id) =>
       movieApiProvider.fetchTrendingMovieList(id);
+  Future<SimilarMovieModel> getSimilarMovieList(int id) =>
+      movieApiProvider.fetchSimilarMovieList(id);
 }
