@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getTrendingMovies() async {
     final repo = Repository();
-    var response = await repo.getTrendingMovieList(1);
+    var response = await repo.getTrendingMovieList(1, "day");
     _trendingMovieList.add(response);
     setState(() {
       _isLoading = false;
@@ -135,7 +135,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: StreamBuilder(
                   stream: stream,
                   builder: (context, AsyncSnapshot<MovieModel> snapshot) {
-                    print(snapshot.connectionState);
                     if (snapshot.hasData) {
                       return ListView.builder(
                           physics: const ClampingScrollPhysics(),

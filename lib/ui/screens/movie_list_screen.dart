@@ -3,6 +3,7 @@ import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/bloc/movies_bloc.dart';
 import 'package:movie_world/models/movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
+import 'package:movie_world/ui/widgets/grid_view_item.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class MovieListScreen extends StatefulWidget {
@@ -80,23 +81,12 @@ class _MovieListScreenState extends State<MovieListScreen> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 9 / 14, crossAxisCount: 2),
             itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
+              return GestureDetector(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => MovieDetailsScreen(
                             id: _movieList[index].id!,
                           ))),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(7.0),
-                    child: Image.network(
-                      'https://image.tmdb.org/t/p/w185' +
-                          _movieList[index].posterPath!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              );
+                  child: GridViewItem(url: _movieList[index].posterPath!));
             }),
         _isListLoading
             ? const Center(child: CircularProgressIndicator())

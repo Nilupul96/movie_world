@@ -13,13 +13,13 @@ class TrendingMovieModel {
   });
 
   int? page;
-  List<Result>? results;
+  List<TrendingMovieResult>? results;
 
   factory TrendingMovieModel.fromJson(Map<String, dynamic> json) =>
       TrendingMovieModel(
         page: json["page"],
         results:
-            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+            List<TrendingMovieResult>.from(json["results"].map((x) => TrendingMovieResult.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -28,8 +28,8 @@ class TrendingMovieModel {
       };
 }
 
-class Result {
-  Result({
+class TrendingMovieResult {
+  TrendingMovieResult({
     this.adult,
     this.id,
     this.voteAverage,
@@ -59,7 +59,7 @@ class Result {
   DateTime? releaseDate;
   double? popularity;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory TrendingMovieResult.fromJson(Map<String, dynamic> json) => TrendingMovieResult(
         adult: json["adult"],
         id: json["id"],
         voteAverage: json["vote_average"].toDouble(),

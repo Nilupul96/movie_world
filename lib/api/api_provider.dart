@@ -9,6 +9,54 @@ import 'package:movie_world/utils/const.dart';
 
 class MovieApiProvider {
   Client client = Client();
+  Future<SimilarMovieModel> getNewToken() async {
+    final response = await client
+        .get(Uri.parse(baseUrl + "authentication/token/new?api_key=$apiKey"));
+    if (response.statusCode == 200) {
+      return SimilarMovieModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
+
+  Future<SimilarMovieModel> authenticateToken(String token) async {
+    final response = await client
+        .get(Uri.parse("https://api.themoviedb.org/authenticate/$token"));
+
+    if (response.statusCode == 200) {
+      return SimilarMovieModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
+
+  Future<SimilarMovieModel> createSession(String token) async {
+    final response = await client.post(
+        Uri.parse(
+          baseUrl + "authentication/session/new?api_key=$apiKey",
+        ),
+        body: {"request_token": token});
+
+    if (response.statusCode == 200) {
+      return SimilarMovieModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
+
+  Future<SimilarMovieModel> deleteSession(String id) async {
+    final response = await client.post(
+        Uri.parse(
+          baseUrl + "authentication/session?api_key=$apiKey",
+        ),
+        body: {"session_id": id});
+
+    if (response.statusCode == 200) {
+      return SimilarMovieModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
 
   Future<MovieModel> fetchPopularMovieList(int page) async {
     final response = await client.get(
@@ -54,9 +102,10 @@ class MovieApiProvider {
     }
   }
 
-  Future<TrendingMovieModel> fetchTrendingMovieList(int page) async {
+  Future<TrendingMovieModel> fetchTrendingMovieList(
+      int page, String type) async {
     final response = await client.get(Uri.parse(
-        baseUrl + "/trending/movie/day?api_key=$apiKey" + "&page=$page"));
+        baseUrl + "/trending/movie/$type?api_key=$apiKey" + "&page=$page"));
 
     if (response.statusCode == 200) {
       return TrendingMovieModel.fromJson(json.decode(response.body));

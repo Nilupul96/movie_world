@@ -23,8 +23,8 @@ class Repository {
   Future<MovieDetailsModel> getMovieDetails(int id) =>
       movieApiProvider.fetchMovieDetails(id);
   Future<CastModel> getMovieCast(int id) => movieApiProvider.fetchMovieCast(id);
-  Future<TrendingMovieModel> getTrendingMovieList(int id) =>
-      movieApiProvider.fetchTrendingMovieList(id);
+  Future<TrendingMovieModel> getTrendingMovieList(int id, String type) =>
+      movieApiProvider.fetchTrendingMovieList(id, type);
   Future<SimilarMovieModel> getSimilarMovieList(int id) =>
       movieApiProvider.fetchSimilarMovieList(id);
 }
