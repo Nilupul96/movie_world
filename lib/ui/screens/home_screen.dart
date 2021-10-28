@@ -7,6 +7,7 @@ import 'package:movie_world/models/movie_model.dart';
 import 'package:movie_world/models/trending_movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/ui/screens/movie_list_screen.dart';
+import 'package:movie_world/ui/widgets/progress_view.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -66,31 +67,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 ))
           ],
         ),
-        body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: ListView(
-              children: [
-                const Text(
-                  "Trending movies",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                _isLoading ? const SizedBox() : _trendingMoviesTile(),
-                _menuItem(
-                  "Popular Movies",
-                  bloc.allPopularMovies,
-                ),
-                _menuItem("Top Rated Movies", bloc.allTopRatedMovies),
-                _menuItem("Upcoming Movies", bloc.allUpComingMovies),
-                // _menuItem("latest movies", bloc.allLatestMovies),
-              ],
-            )));
+        body: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: const Text(
+                "Trending movies",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            _isLoading ? const SizedBox() : _trendingMoviesTile(),
+            _menuItem(
+              "Popular Movies",
+              bloc.allPopularMovies,
+            ),
+            _menuItem("Top Rated Movies", bloc.allTopRatedMovies),
+            _menuItem("Upcoming Movies", bloc.allUpComingMovies),
+            // _menuItem("latest movies", bloc.allLatestMovies),
+          ],
+        ));
   }
 
   Widget _menuItem(String title, stream) {
@@ -101,32 +103,35 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(
             height: 10.h,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MovieListScreen(
-                            movieType: title,
-                          )));
-                },
-                child: const Text(
-                  "See all",
-                  style: TextStyle(
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
-              )
-            ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MovieListScreen(
+                              movieType: title,
+                            )));
+                  },
+                  child: const Text(
+                    "See all",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
           ),
           SizedBox(
             height: 20.h,
@@ -174,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 50,
                         width: 50.h,
                         child: const Center(
-                          child: CircularProgressIndicator(),
+                          child: ProgressView(),
                         ));
                   }))
         ],

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/models/actor_details_model.dart';
 import 'package:movie_world/models/cast_model.dart';
+import 'package:movie_world/ui/widgets/progress_view.dart';
 import 'package:movie_world/utils/styles.dart';
 import 'package:readmore/readmore.dart';
 
@@ -46,8 +47,8 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
         ),
       ),
       body: _isPageLoading
-          ? Center(
-              child: CircularProgressIndicator(),
+          ? const Center(
+              child: ProgressView(),
             )
           : ListView(
               children: [

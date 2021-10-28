@@ -4,6 +4,7 @@ import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/models/trending_movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/ui/widgets/grid_view_item.dart';
+import 'package:movie_world/ui/widgets/progress_view.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class TrendingMoviesScreen extends StatefulWidget {
@@ -46,76 +47,68 @@ class _TrendingMoviesScreenState extends State<TrendingMoviesScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
-      length: 2,
-      child: Scaffold(
-        backgroundColor: DefaultDarkColor,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
+        initialIndex: 0,
+        length: 2,
+        child: Scaffold(
           backgroundColor: DefaultDarkColor,
-          elevation: 0,
-          title: const Text(
-            "Trending Movies",
-            style: TextStyle(color: Colors.white),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: DefaultDarkColor,
+            elevation: 0,
+            bottom: TabBar(
+                onTap: (index) {
+                  isPageLoading = true;
+                  setState(() {
+                    currentIndex = index;
+                  });
+                  trendingMovieList.clear();
+                  getTrendingMovieList(1, currentIndex);
+                },
+                indicatorColor: Colors.lightBlueAccent,
+                indicatorWeight: 4,
+                tabs: const [
+                  Tab(
+                    text: "Today",
+                  ),
+                  Tab(
+                    text: "This Week",
+                  )
+                ]),
+            title: const Text(
+              "Trending Movies",
+              style: TextStyle(color: Colors.white),
+            ),
           ),
-        ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: NotificationListener<ScrollNotification>(
-              onNotification: (scrollInfo) {
-                if (!isListLoading &&
-                    scrollInfo.metrics.pixels ==
-                        scrollInfo.metrics.maxScrollExtent) {
-                  if (!_pageEnd) {
-                    isListLoading = true;
-                    page = page! + 1;
-                    getTrendingMovieList(page!, currentIndex);
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            child: NotificationListener<ScrollNotification>(
+                onNotification: (scrollInfo) {
+                  if (!isListLoading &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                    if (!_pageEnd) {
+                      isListLoading = true;
+                      page = page! + 1;
+                      getTrendingMovieList(page!, currentIndex);
+                    }
                   }
-                }
-                return true;
-              },
-              child: _buildBody()),
-        ),
-      ),
-    );
+                  return true;
+                },
+                child: _buildBody()),
+          ),
+        ));
   }
 
   Widget _buildBody() {
-    return ListView(
-      children: [
-        // _tabView(),
-        isPageLoading
+    return isPageLoading
+        ? const Center(
+            child: ProgressView(),
+          )
+        : trendingMovieList.isEmpty
             ? const Center(
-                child: CircularProgressIndicator(),
+                child: Text("No data"),
               )
-            : trendingMovieList.isEmpty
-                ? const Center(
-                    child: Text("No data"),
-                  )
-                : _buildList()
-      ],
-    );
-  }
-
-  Widget _tabView() {
-    return SizedBox(
-      height: 40.h,
-      child: TabBar(
-          onTap: (index) {
-            isPageLoading = true;
-            setState(() {
-              currentIndex = index;
-            });
-          },
-          tabs: const [
-            Tab(
-              text: "Today",
-            ),
-            Tab(
-              text: "This Week",
-            )
-          ]),
-    );
+            : _buildList();
   }
 
   Widget _buildList() {

@@ -4,6 +4,7 @@ import 'package:movie_world/bloc/movies_bloc.dart';
 import 'package:movie_world/models/movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/ui/widgets/grid_view_item.dart';
+import 'package:movie_world/ui/widgets/progress_view.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class MovieListScreen extends StatefulWidget {
@@ -88,9 +89,7 @@ class _MovieListScreenState extends State<MovieListScreen> {
                           ))),
                   child: GridViewItem(url: _movieList[index].posterPath!));
             }),
-        _isListLoading
-            ? const Center(child: CircularProgressIndicator())
-            : const SizedBox()
+        _isListLoading ? const Center(child: ProgressView()) : const SizedBox()
       ],
     );
   }

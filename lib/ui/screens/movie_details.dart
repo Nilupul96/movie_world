@@ -9,6 +9,7 @@ import 'package:movie_world/models/cast_model.dart';
 import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/similar_movie_model.dart';
 import 'package:movie_world/ui/screens/actor_details_screen.dart';
+import 'package:movie_world/ui/widgets/progress_view.dart';
 import 'package:movie_world/utils/styles.dart';
 import 'package:readmore/readmore.dart';
 
@@ -145,10 +146,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Widget _buildSimilarMovieList() {
     return isSimilarMoviesLoading
         ? const Center(
-            child: CircularProgressIndicator(),
+            child: ProgressView(),
           )
         : similarMovieList.isNotEmpty
-            ? Container(
+            ? SizedBox(
                 height: 200.h,
                 child: ListView.builder(
                     shrinkWrap: true,
@@ -161,7 +162,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 builder: (context) => MovieDetailsScreen(
                                       id: similarMovieList[index].id!,
                                     ))),
-                        child: Container(
+                        child: SizedBox(
                           width: 120.w,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -195,7 +196,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       );
                     }),
               )
-            : Center(child: Text("No similar Movies"));
+            : const Center(child: Text("No similar Movies"));
   }
 
   Widget _rating(double rate) {
@@ -248,7 +249,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       child: Container(
         padding: EdgeInsets.all(10.0.w),
         decoration: BoxDecoration(
-            color: Color(0xff24243b),
+            color: const Color(0xff24243b),
             border: Border.all(color: Colors.lightBlueAccent),
             borderRadius: BorderRadius.circular(10)),
         child: ReadMoreText(
@@ -287,7 +288,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           } else if (snapshot.hasError) {
             return const Center(child: Text("No data"));
           }
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: ProgressView());
         },
       ),
     );
