@@ -41,7 +41,8 @@ class _LyfTextFormFieldState extends State<LyfTextFormField> {
         focusNode: widget.focusNode,
         onFieldSubmitted: widget.onFieldSubmitted,
         textInputAction: widget.textInputAction,
-
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         decoration: InputDecoration(
           suffix: widget.suffix,
           suffixIcon: widget.isPassword

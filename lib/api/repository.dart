@@ -30,4 +30,9 @@ class Repository {
       movieApiProvider.fetchSimilarMovieList(id);
   Future<ActorDetailsModel> getActorDetails(int id) =>
       movieApiProvider.fetchActorDetails(id);
+  Future<void> userRegister(
+          String email, String password, String username, context) =>
+      movieApiProvider.userRegister(email, password, username, context);
+  Future<void> userLogin(String email, String password, context) =>
+      movieApiProvider.userLogin(email, password, context);
 }

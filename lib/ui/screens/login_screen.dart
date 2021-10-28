@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/ui/screens/base_screen.dart';
-import 'package:movie_world/ui/screens/home_screen.dart';
 import 'package:movie_world/ui/screens/register_screen.dart';
 import 'package:movie_world/ui/widgets/text_field.dart';
 import 'package:movie_world/utils/styles.dart';
@@ -26,6 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  userLogin() async {
+    final _repo = Repository();
+    _repo.userLogin(_email.text, _password.text, context);
   }
 
   @override
@@ -66,10 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(7.0)),
                       padding: const EdgeInsets.all(10),
                       primary: const Color(0xffe93f3f)),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => BaseScreen()));
-                  },
+                  onPressed: () => userLogin(),
                   child: const Text("Log in",
                       style: TextStyle(
                         fontSize: 24.0,

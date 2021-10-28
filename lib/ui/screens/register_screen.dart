@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_world/ui/screens/base_screen.dart';
-import 'package:movie_world/ui/screens/home_screen.dart';
+import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/ui/screens/login_screen.dart';
 import 'package:movie_world/ui/widgets/text_field.dart';
 import 'package:movie_world/utils/styles.dart';
@@ -26,6 +25,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  userRegister() async {
+    final _repository = Repository();
+    await _repository.userRegister(
+        _email.text, _password.text, _userName.text, context);
   }
 
   @override
@@ -75,10 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(7.0)),
                           padding: const EdgeInsets.all(10),
                           primary: const Color(0xffe93f3f)),
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BaseScreen()));
-                      },
+                      onPressed: () => userRegister(),
                       child: const Text("Register",
                           style: TextStyle(
                             fontSize: 24.0,

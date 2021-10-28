@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:movie_world/models/actor_details_model.dart';
 import 'package:movie_world/models/cast_model.dart';
@@ -6,7 +7,12 @@ import 'package:movie_world/models/movie_details_model.dart';
 import 'package:movie_world/models/movie_model.dart';
 import 'package:movie_world/models/similar_movie_model.dart';
 import 'package:movie_world/models/trending_movie_model.dart';
+import 'package:movie_world/ui/screens/base_screen.dart';
+import 'package:movie_world/ui/screens/login_screen.dart';
+import 'package:movie_world/ui/widgets/alert.dart';
+import 'package:movie_world/ui/widgets/progress_dialog.dart';
 import 'package:movie_world/utils/const.dart';
+import 'package:movie_world/utils/settings.dart';
 
 class MovieApiProvider {
   Client client = Client();
@@ -156,6 +162,64 @@ class MovieApiProvider {
       return ActorDetailsModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load movie details');
+    }
+  }
+
+  Future<void> userRegister(
+      String email, String passwaord, String username, context) async {
+    final _progDig = ProgressDialog(context);
+    _progDig.show();
+    final response = await client.post(
+        Uri.parse(
+            "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAp-m-uh8Ded7MdYbmB28FsjKsjOoD700E"),
+        body: json.encode({
+          "email": email,
+          "password": passwaord,
+          "returnSecureToken": true
+        }));
+
+    var jsonBody = json.decode(response.body)["localId"];
+    _progDig.hide();
+    if (response.statusCode == 200) {
+      final response1 = await client.post(
+          Uri.parse(
+              "https://movie-world-efeee-default-rtdb.firebaseio.com/User/$jsonBody.json"),
+          body: json
+              .encode({"email": email, "password": passwaord, "id": jsonBody}));
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+    } else {
+      Alerts.showMessage(
+          context, json.decode(response.body)["error"]["message"]);
+    }
+  }
+
+  Future<void> userLogin(String email, String passwaord, context) async {
+    final _progDig = ProgressDialog(context);
+    _progDig.show();
+    final response = await client.post(
+        Uri.parse(
+            "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAp-m-uh8Ded7MdYbmB28FsjKsjOoD700E"),
+        body: json.encode({
+          "email": email,
+          "password": passwaord,
+          "returnSecureToken": true
+        }));
+
+    var jsonBody = json.decode(response.body);
+    print(jsonBody);
+    if (response.statusCode == 200) {
+      await Settings.setAccessToken(jsonBody["idToken"]);
+      await Settings.setRefreshToken(jsonBody["refreshToken"]);
+      await Settings.setUserId(jsonBody["localId"]);
+      _progDig.hide();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const BaseScreen()));
+    } else {
+      _progDig.hide();
+      Alerts.showMessage(
+          context, json.decode(response.body)["error"]["message"]);
     }
   }
 }
