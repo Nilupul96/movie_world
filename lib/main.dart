@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
                       movieType: "Popular Movies",
                     ),
               },
-              home: const LoginScreen(),
+              home: const SplashScreen(),
             ));
   }
 }

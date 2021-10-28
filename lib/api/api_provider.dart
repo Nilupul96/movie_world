@@ -184,8 +184,13 @@ class MovieApiProvider {
       final response1 = await client.post(
           Uri.parse(
               "https://movie-world-efeee-default-rtdb.firebaseio.com/User/$jsonBody.json"),
-          body: json
-              .encode({"email": email, "password": passwaord, "id": jsonBody}));
+          body: json.encode({
+            "email": email,
+            "password": passwaord,
+            "id": jsonBody,
+            "bio": "",
+            "imageUrl": ""
+          }));
 
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
@@ -207,6 +212,34 @@ class MovieApiProvider {
           "returnSecureToken": true
         }));
 
+    var jsonBody = json.decode(response.body);
+    print(jsonBody);
+    if (response.statusCode == 200) {
+      await Settings.setAccessToken(jsonBody["idToken"]);
+      await Settings.setRefreshToken(jsonBody["refreshToken"]);
+      await Settings.setUserId(jsonBody["localId"]);
+      _progDig.hide();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const BaseScreen()));
+    } else {
+      _progDig.hide();
+      Alerts.showMessage(
+          context, json.decode(response.body)["error"]["message"]);
+    }
+  }
+
+  Future<void> updateUser(String email, String passwaord, context) async {
+    final _progDig = ProgressDialog(context);
+    _progDig.show();
+    final response = await client.post(
+        Uri.parse(
+            "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyAp-m-uh8Ded7MdYbmB28FsjKsjOoD700E"),
+        body: json.encode({
+          "idToken": email,
+          "displayName": passwaord,
+          "photoUrl": true,
+          "deleteAttribute": false
+        }));
     var jsonBody = json.decode(response.body);
     print(jsonBody);
     if (response.statusCode == 200) {

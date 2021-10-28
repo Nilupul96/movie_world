@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<TrendingMovieModel> _trendingMovieList = [];
   bool _isLoading = true;
+  int indicatorIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -84,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
             ),
             _isLoading ? const SizedBox() : _trendingMoviesTile(),
+            _isLoading ? const SizedBox() : _indicatorList(indicatorIndex),
             _menuItem(
               "Popular Movies",
               bloc.allPopularMovies,
@@ -93,6 +95,31 @@ class _HomeScreenState extends State<HomeScreen> {
             // _menuItem("latest movies", bloc.allLatestMovies),
           ],
         ));
+  }
+
+  Widget _indicatorList(int index) {
+    return Center(
+      child: SizedBox(
+        height: 30.h,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 10.h),
+          child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: _trendingMovieList[0].results!.length,
+              itemBuilder: (context, i) {
+                return Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: CircleAvatar(
+                    radius: 4.h,
+                    backgroundColor:
+                        index == i ? Color(0xffe93f3f) : Colors.white,
+                  ),
+                );
+              }),
+        ),
+      ),
+    );
   }
 
   Widget _menuItem(String title, stream) {
@@ -190,19 +217,23 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _trendingMoviesTile() {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 400,
-        aspectRatio: 16 / 9,
-        viewportFraction: 0.8,
-        initialPage: 0,
-        enableInfiniteScroll: true,
-        reverse: false,
-        autoPlay: true,
-        autoPlayInterval: const Duration(seconds: 2),
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enlargeCenterPage: true,
-        scrollDirection: Axis.horizontal,
-      ),
+          height: 400,
+          aspectRatio: 16 / 9,
+          viewportFraction: 0.8,
+          initialPage: 0,
+          enableInfiniteScroll: true,
+          reverse: false,
+          autoPlay: true,
+          autoPlayInterval: const Duration(seconds: 2),
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enlargeCenterPage: true,
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (index, reason) {
+            setState(() {
+              indicatorIndex = index;
+            });
+          }),
       items: _trendingMovieList[0].results!.map((i) {
         return Builder(
           builder: (BuildContext context) {
