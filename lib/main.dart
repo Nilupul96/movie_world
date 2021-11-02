@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_world/ui/screens/base_screen.dart';
 import 'package:movie_world/ui/screens/home_screen.dart';
 import 'package:movie_world/ui/screens/login_screen.dart';
 import 'package:movie_world/ui/screens/movie_list_screen.dart';

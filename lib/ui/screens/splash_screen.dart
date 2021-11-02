@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _startTimer() async {
-    Timer(const Duration(seconds: 2), () async {
+    Timer(const Duration(seconds: 3), () async {
       var alreadyLogged = await checkUser();
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => alreadyLogged ? LoginScreen() : BaseScreen()));
@@ -44,14 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            color: DefaultDarkColor,
+            decoration: const BoxDecoration(
+                color: DefaultDarkColor,
+                image: DecorationImage(
+                    image: AssetImage("images/back.jpg"), fit: BoxFit.cover)),
             child: Center(
-              child: Text("Movie World",
-                  style: GoogleFonts.abrilFatface(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 40,
-                    color: Colors.white,
-                  )),
-            )));
+                child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Image.asset("images/logo.png"),
+            ))));
   }
 }

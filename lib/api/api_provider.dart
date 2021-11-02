@@ -12,6 +12,7 @@ import 'package:movie_world/ui/screens/login_screen.dart';
 import 'package:movie_world/ui/widgets/alert.dart';
 import 'package:movie_world/ui/widgets/progress_dialog.dart';
 import 'package:movie_world/utils/const.dart';
+import 'package:movie_world/utils/error_messages.dart';
 import 'package:movie_world/utils/settings.dart';
 
 class MovieApiProvider {
@@ -196,7 +197,9 @@ class MovieApiProvider {
           .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
     } else {
       Alerts.showMessage(
-          context, json.decode(response.body)["error"]["message"]);
+          context,
+          ErrorMessages.getErrorMessage(
+              json.decode(response.body)["error"]["message"]));
     }
   }
 
@@ -224,7 +227,9 @@ class MovieApiProvider {
     } else {
       _progDig.hide();
       Alerts.showMessage(
-          context, json.decode(response.body)["error"]["message"]);
+          context,
+          ErrorMessages.getErrorMessage(
+              json.decode(response.body)["error"]["message"]));
     }
   }
 
@@ -252,7 +257,9 @@ class MovieApiProvider {
     } else {
       _progDig.hide();
       Alerts.showMessage(
-          context, json.decode(response.body)["error"]["message"]);
+          context,
+          ErrorMessages.getErrorMessage(
+              json.decode(response.body)["error"]["message"]));
     }
   }
 }

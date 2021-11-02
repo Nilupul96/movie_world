@@ -1,12 +1,8 @@
-// ignore_for_file: constant_identifier_names
 
 enum ApiStatus {
-  UNKNOWN,
-  SUCCESS,
-  NO_INTERNET,
-  TIMEOUT,
-  CLIENT_ERROR,
-  SERVICE_ERROR,
-  EXCEPTION,
-  PARSE_ERROR
+  EMAIL_EXISTS,
+  TOO_MANY_ATTEMPTS_TRY_LATER,
+  EMAIL_NOT_FOUND,
+  INVALID_PASSWORD
+
 }
