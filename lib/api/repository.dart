@@ -35,4 +35,6 @@ class Repository {
       movieApiProvider.userRegister(email, password, username, context);
   Future<void> userLogin(String email, String password, context) =>
       movieApiProvider.userLogin(email, password, context);
+  Future<MovieModel> getSearchMovieList(int id, String searchText) =>
+      movieApiProvider.fetchSearchMovieList(id, searchText);
 }

@@ -8,6 +8,7 @@ import 'package:movie_world/models/movie_model.dart';
 import 'package:movie_world/models/trending_movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
 import 'package:movie_world/ui/screens/movie_list_screen.dart';
+import 'package:movie_world/ui/screens/search_screen.dart';
 import 'package:movie_world/ui/widgets/progress_view.dart';
 import 'package:movie_world/utils/styles.dart';
 
@@ -59,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const SearchScreen()));
+                },
                 icon: const Icon(
                   Icons.search,
                   color: Colors.white,

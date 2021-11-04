@@ -263,4 +263,17 @@ class MovieApiProvider {
               json.decode(response.body)["error"]["message"]));
     }
   }
+
+  Future<MovieModel> fetchSearchMovieList(int page, String searchText) async {
+    final response = await client.get(Uri.parse(baseUrl +
+        "search/movie/?api_key=$apiKey" +
+        "&query=$searchText" +
+        "&page=$page"));
+
+    if (response.statusCode == 200) {
+      return MovieModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load latest movies');
+    }
+  }
 }
