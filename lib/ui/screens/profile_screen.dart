@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_world/ui/screens/edit_profile_screen.dart';
 import 'package:movie_world/ui/screens/home_screen.dart';
+import 'package:movie_world/ui/screens/login_screen.dart';
 import 'package:movie_world/ui/widgets/confirmation_popup.dart';
 import 'package:movie_world/utils/styles.dart';
 
@@ -39,29 +42,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: 20.sp,
+                    fontSize: 22.sp,
                     fontWeight: FontWeight.w600),
               ),
             ),
           ),
           actions: [
             GestureDetector(
-              onTap: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => HomeScreen())),
+              onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen())),
               child: GestureDetector(
                 onTap: () => ConfirmationPopup.showMessage(
-                    context, "Do you want to logout?"),
+                    context, "Do you want to logout?",
+                    onCloseCallback: () => Navigator.of(context)
+                        .pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
+                            (route) => false)),
                 child: Container(
-                  padding: EdgeInsets.only(right: 20.w, top: 15.h),
-                  color: Colors.transparent,
-                  child: Text("Logout",
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600),
-                      )),
-                ),
+                    padding: EdgeInsets.only(right: 20.w, top: 15.h),
+                    color: Colors.transparent,
+                    child: const Icon(Icons.logout, color: Colors.white)),
               ),
             )
           ],
@@ -87,44 +88,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20.h),
-            Center(
-              child: Text("Nilupul",
-                  style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500)),
-            ),
-            SizedBox(height: 20.h),
-            _bio(
-              "bio",
-              " profileProvider.sellerInfo!.description",
-            ),
+            _bio(),
+            SizedBox(height: 30.h),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                      padding: const EdgeInsets.all(10),
+                      primary: const Color(0xffe93f3f)),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const EditProfileScreen(
+                            name: "",
+                            email: "",
+                            bio: "",
+                          ))),
+                  child: const Text("Edit",
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      )),
+                )),
           ],
         ));
   }
 
-  Widget _bio(String title, String dis) {
+  Widget _bio() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [BoxShadow(color: Color(0xff6E6E6E52), blurRadius: 6.0)]),
+        color: const Color(0xff24243b),
+        border: Border.all(color: Colors.lightBlueAccent),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(title,
-              style: GoogleFonts.poppins(
-                  color: Colors.lightBlueAccent,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600)),
-          SizedBox(height: 20.h),
-          Text(dis,
-              style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400))
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Text("Username:  Nilupul",
+                style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500)),
+          ),
+          SizedBox(height: 10.h),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Text("Email:  Nilupul@gmail.com",
+                style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500)),
+          ),
+          SizedBox(height: 10.h),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Text("Bio:",
+                style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500)),
+          ),
         ],
       ),
     );

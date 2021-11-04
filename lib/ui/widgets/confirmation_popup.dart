@@ -23,92 +23,89 @@ class ConfirmationPopup {
                   topLeft: Radius.circular(8),
                   bottomRight: Radius.circular(8)),
             ),
-            child: Container(
-              child: Padding(
-                padding: EdgeInsets.all(bsv * 1.9),
-                child: Wrap(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(width: double.infinity),
-                        SizedBox(
-                            width: bsv * 4,
-                            height: bsv * 3.8,
-                            child: Icon(Icons.exit_to_app)),
-                        SizedBox(
-                          height: bsv * 2.2,
+            child: Padding(
+              padding: EdgeInsets.all(bsv * 1.9),
+              child: Wrap(
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(width: double.infinity),
+                      SizedBox(
+                          width: bsv * 4,
+                          height: bsv * 3.8,
+                          child: Icon(Icons.exit_to_app)),
+                      SizedBox(
+                        height: bsv * 2.2,
+                      ),
+                      Text(
+                        message,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                          fontSize: bsv * 2.4,
                         ),
-                        Text(
-                          message,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                            fontSize: bsv * 2.4,
+                      ),
+                      SizedBox(
+                        height: bsv * 2.4,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: bsv * 5,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                  padding: EdgeInsets.all(12),
+                                ),
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  "Cancel",
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: bsv * 2.4,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: bsv * 5,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                    padding: EdgeInsets.all(12),
-                                  ),
-                                  onPressed: () => _close(context,
-                                      onCloseCallback: onCloseCallback),
-                                  child: Text(
-                                    "Cancel",
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
-                                  ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: bsv * 5,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: const Color(0xff00BA32),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                  padding: const EdgeInsets.all(12),
+                                ),
+                                onPressed: () => _close(context,
+                                    onCloseCallback: onCloseCallback),
+                                child: Text(
+                                  "Ok",
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white),
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: SizedBox(
-                                height: bsv * 5,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: const Color(0xff00BA32),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                    padding: const EdgeInsets.all(12),
-                                  ),
-                                  onPressed: () => _close(context,
-                                      onCloseCallback: onCloseCallback),
-                                  child: Text(
-                                    "Ok",
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
           );

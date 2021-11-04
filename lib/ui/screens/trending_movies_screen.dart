@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/models/trending_movie_model.dart';
 import 'package:movie_world/ui/screens/movie_details.dart';
@@ -66,17 +67,35 @@ class _TrendingMoviesScreenState extends State<TrendingMoviesScreen> {
                 },
                 indicatorColor: Colors.lightBlueAccent,
                 indicatorWeight: 4,
-                tabs: const [
+                tabs: [
                   Tab(
-                    text: "Today",
-                  ),
+                      child: Text(
+                    "Today",
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  )),
                   Tab(
-                    text: "This Week",
-                  )
+                      child: Text(
+                    "This Week",
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  )),
                 ]),
-            title: const Text(
+            title: Text(
               "Trending Movies",
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w600)),
             ),
           ),
           body: Container(

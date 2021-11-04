@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/models/actor_details_model.dart';
@@ -43,7 +44,11 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
         elevation: 0,
         title: Text(
           widget.actor.name!,
-          style: const TextStyle(color: Colors.white),
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600)),
         ),
       ),
       body: _isPageLoading

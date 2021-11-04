@@ -11,6 +11,16 @@ class Settings {
     sharedPrefs.getString("access_token");
   }
 
+  static setEmailAdress(String token) async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs.setString("email", token);
+  }
+
+  static getEmailAdress() async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs.getString("email");
+  }
+
   static setRefreshToken(String token) async {
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     sharedPrefs.setString("refresh_token", token);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/bloc/movie_cast_bloc.dart';
 import 'package:movie_world/bloc/movie_details_bloc.dart';
@@ -84,10 +85,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     " (" +
                     snapshot.data!.releaseDate!.year.toString() +
                     ")",
-                style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600)),
               ),
             ),
             SizedBox(
@@ -106,10 +108,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.0),
               child: Text(
                 "cast",
-                style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500)),
               ),
             ),
             _castList(),
@@ -117,10 +120,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.0),
               child: Text(
                 "Similar movies",
-                style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500)),
               ),
             ),
             _buildSimilarMovieList(),

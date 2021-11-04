@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/bloc/movies_bloc.dart';
 import 'package:movie_world/models/movie_model.dart';
@@ -47,10 +48,13 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           titleSpacing: 20.w,
-          title: const Text(
-            "Home",
-            style: TextStyle(color: Colors.white),
-          ),
+          title: Text("Home",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600),
+              )),
           backgroundColor: DefaultDarkColor,
           elevation: 0,
           actions: [
@@ -66,13 +70,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: const Text(
+              child: Text(
                 "Trending movies",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500)),
               ),
             ),
             const SizedBox(
@@ -131,10 +136,11 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w500)),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -143,12 +149,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               movieType: title,
                             )));
                   },
-                  child: const Text(
+                  child: Text(
                     "See all",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500)),
                   ),
                 )
               ],

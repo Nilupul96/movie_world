@@ -221,6 +221,7 @@ class MovieApiProvider {
       await Settings.setAccessToken(jsonBody["idToken"]);
       await Settings.setRefreshToken(jsonBody["refreshToken"]);
       await Settings.setUserId(jsonBody["localId"]);
+      await Settings.setEmailAdress(jsonBody["email"]);
       _progDig.hide();
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => const BaseScreen()));
