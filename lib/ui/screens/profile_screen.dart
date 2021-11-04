@@ -100,8 +100,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       primary: const Color(0xffe93f3f)),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const EditProfileScreen(
-                            name: "",
-                            email: "",
+                            name: "Nilupul",
+                            email: "nilupul@gmail.com",
                             bio: "",
                           ))),
                   child: const Text("Edit",
@@ -137,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(height: 10.h),
           Align(
             alignment: Alignment.bottomLeft,
-            child: Text("Email:  Nilupul@gmail.com",
+            child: Text("Email:  nilupul@gmail.com",
                 style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 18,

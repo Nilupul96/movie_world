@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7.0),
                                   child: Image.network(
-                                    'https://image.tmdb.org/t/p/w185' +
+                                    'https://image.tmdb.org/t/p/w780' +
                                         snapshot
                                             .data!.results![index].posterPath!,
                                     fit: BoxFit.cover,
@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.network(
-                      'https://image.tmdb.org/t/p/w185' + i.posterPath!,
+                      'https://image.tmdb.org/t/p/w780' + i.posterPath!,
                       fit: BoxFit.cover,
                     )),
               ),

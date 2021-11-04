@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_world/ui/screens/base_screen.dart';
 import 'package:movie_world/ui/screens/profile_screen.dart';
 import 'package:movie_world/ui/widgets/text_field.dart';
 import 'package:movie_world/utils/styles.dart';
@@ -54,7 +55,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           backgroundColor: DefaultDarkColor,
           elevation: 0,
           title: Padding(
-            padding: EdgeInsets.only(right: 20.w, top: 15.h),
+            padding: EdgeInsets.only(right: 20.w),
             child: Text(
               "Edit profile",
               style: GoogleFonts.poppins(
@@ -70,20 +71,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
             SizedBox(height: 20.h),
             Center(
-              child: Container(
-                width: 170.h,
-                height: 170.h,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Color(0XFFFC6748), width: 2.0),
-                    borderRadius: BorderRadius.circular(180.0)),
-                child: Padding(
-                    padding: EdgeInsets.all(20.h * 4.0 / 6.8),
-                    child: CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        radius: 50.h,
-                        backgroundImage:
-                            Image.asset("./images/profile.jpg").image)),
+              child: Stack(
+                children: [
+                  Container(
+                    width: 170.h,
+                    height: 170.h,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border:
+                            Border.all(color: Color(0XFFFC6748), width: 2.0),
+                        borderRadius: BorderRadius.circular(180.0)),
+                    child: Padding(
+                        padding: EdgeInsets.all(20.h * 4.0 / 6.8),
+                        child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            radius: 50.h,
+                            backgroundImage:
+                                Image.asset("./images/profile.jpg").image)),
+                  ),
+                  const Positioned(
+                      bottom: 0,
+                      left: 140 / 2,
+                      child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                          child: Padding(
+                              padding: EdgeInsets.all(3.0),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 30,
+                              )))),
+                ],
               ),
             ),
             SizedBox(height: 20.h),
@@ -116,7 +134,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       padding: const EdgeInsets.all(10),
                       primary: const Color(0xffe93f3f)),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ProfileScreen())),
+                      builder: (context) => const BaseScreen(
+                            index: 2,
+                          ))),
                   child: const Text("Save",
                       style: TextStyle(
                         fontSize: 24.0,

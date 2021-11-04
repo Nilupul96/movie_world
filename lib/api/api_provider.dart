@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:movie_world/api/api_status.dart';
 import 'package:movie_world/models/actor_details_model.dart';
 import 'package:movie_world/models/cast_model.dart';
 import 'package:movie_world/models/movie_details_model.dart';
@@ -223,14 +224,14 @@ class MovieApiProvider {
       await Settings.setUserId(jsonBody["localId"]);
       await Settings.setEmailAdress(jsonBody["email"]);
       _progDig.hide();
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const BaseScreen()));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const BaseScreen(
+                index: 0,
+              )));
     } else {
       _progDig.hide();
       Alerts.showMessage(
-          context,
-          ErrorMessages.getErrorMessage(
-              json.decode(response.body)["error"]["message"]));
+          context, json.decode(response.body)["error"]["message"]);
     }
   }
 
@@ -253,14 +254,14 @@ class MovieApiProvider {
       await Settings.setRefreshToken(jsonBody["refreshToken"]);
       await Settings.setUserId(jsonBody["localId"]);
       _progDig.hide();
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const BaseScreen()));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const BaseScreen(
+                index: 0,
+              )));
     } else {
       _progDig.hide();
       Alerts.showMessage(
-          context,
-          ErrorMessages.getErrorMessage(
-              json.decode(response.body)["error"]["message"]));
+          context, json.decode(response.body)["error"]["message"]);
     }
   }
 

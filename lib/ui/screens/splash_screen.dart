@@ -27,7 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () async {
       var alreadyLogged = await checkUser();
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => alreadyLogged ? LoginScreen() : BaseScreen()));
+          builder: (context) => alreadyLogged
+              ? LoginScreen()
+              : BaseScreen(
+                  index: 0,
+                )));
     });
   }
 

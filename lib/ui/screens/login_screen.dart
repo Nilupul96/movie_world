@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/ui/screens/base_screen.dart';
 import 'package:movie_world/ui/screens/register_screen.dart';
@@ -48,6 +49,15 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Center(
+                child: Text("Sign In",
+                    style: GoogleFonts.pacifico(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.w500),
+                    )),
+              ),
               LyfTextFormField(
                 labelText: "Email",
                 textEditingController: _email,

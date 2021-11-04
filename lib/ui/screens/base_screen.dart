@@ -5,7 +5,8 @@ import 'package:movie_world/ui/screens/trending_movies_screen.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class BaseScreen extends StatefulWidget {
-  const BaseScreen({Key? key}) : super(key: key);
+  final int index;
+  const BaseScreen({Key? key, required this.index}) : super(key: key);
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
@@ -17,7 +18,13 @@ class _BaseScreenState extends State<BaseScreen> {
     const TrendingMoviesScreen(),
     const ProfileScreen(),
   ];
-  int _currentIndex = 0;
+  int? _currentIndex;
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.index;
+  }
+
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -28,9 +35,9 @@ class _BaseScreenState extends State<BaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: DefaultDarkColor,
-      body: _screens[_currentIndex],
+      body: _screens[_currentIndex!],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: _currentIndex!,
         type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xff24243b),
         unselectedItemColor: Colors.white,

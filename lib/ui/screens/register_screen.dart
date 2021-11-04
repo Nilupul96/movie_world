@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_world/api/repository.dart';
 import 'package:movie_world/ui/screens/login_screen.dart';
 import 'package:movie_world/ui/widgets/text_field.dart';
@@ -49,6 +50,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                  Center(
+                    child: Text("Sign Up",
+                        style: GoogleFonts.pacifico(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 33.sp,
+                              fontWeight: FontWeight.w500),
+                        )),
+                  ),
                   LyfTextFormField(
                     labelText: "Username",
                     textEditingController: _userName,
