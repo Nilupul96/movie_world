@@ -89,6 +89,7 @@ class _TrendingMoviesScreenState extends State<TrendingMoviesScreen> {
                     ),
                   )),
                 ]),
+                // hello
             title: Text(
               "Trending Movies",
               style: GoogleFonts.poppins(
