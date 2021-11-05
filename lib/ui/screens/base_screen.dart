@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:movie_world/ui/screens/home_screen.dart';
 import 'package:movie_world/ui/screens/profile_screen.dart';
@@ -6,7 +7,9 @@ import 'package:movie_world/utils/styles.dart';
 
 class BaseScreen extends StatefulWidget {
   final int index;
-  const BaseScreen({Key? key, required this.index}) : super(key: key);
+  final File? file;
+  const BaseScreen({Key? key, required this.index, this.file})
+      : super(key: key);
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
@@ -16,7 +19,10 @@ class _BaseScreenState extends State<BaseScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const TrendingMoviesScreen(),
-    const ProfileScreen(),
+    const ProfileScreen(
+      name: "Hoiz",
+      email: "hoiz@gmail.com",
+    ),
   ];
   int? _currentIndex;
   @override

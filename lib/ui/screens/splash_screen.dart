@@ -28,8 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
       var alreadyLogged = await checkUser();
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => alreadyLogged
-              ? LoginScreen()
-              : BaseScreen(
+              ? const LoginScreen()
+              : const BaseScreen(
                   index: 0,
                 )));
     });
@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> checkUser() async {
     var token = await Settings.getAccessToken();
-    if (token != null) {
+    if (token != null || token != "") {
       return true;
     } else {
       return false;

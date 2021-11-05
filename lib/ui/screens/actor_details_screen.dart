@@ -113,6 +113,7 @@ class _ActorDetailsScreenState extends State<ActorDetailsScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: RatingBar.builder(
+        unratedColor: Colors.blueGrey,
         ignoreGestures: true,
         initialRating: rate / 2,
         minRating: 1,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,10 +8,16 @@ import 'package:movie_world/ui/screens/edit_profile_screen.dart';
 import 'package:movie_world/ui/screens/home_screen.dart';
 import 'package:movie_world/ui/screens/login_screen.dart';
 import 'package:movie_world/ui/widgets/confirmation_popup.dart';
+import 'package:movie_world/utils/settings.dart';
 import 'package:movie_world/utils/styles.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final String name;
+  final String email;
+  final File? file;
+  const ProfileScreen(
+      {Key? key, required this.name, required this.email, this.file})
+      : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -53,12 +61,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   MaterialPageRoute(builder: (context) => const HomeScreen())),
               child: GestureDetector(
                 onTap: () => ConfirmationPopup.showMessage(
-                    context, "Do you want to logout?",
-                    onCloseCallback: () => Navigator.of(context)
-                        .pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                            (route) => false)),
+                    context, "Do you want to logout?", onCloseCallback: () {
+                  Settings.setAccessToken("");
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                      (route) => false);
+                }),
                 child: Container(
                     padding: EdgeInsets.only(right: 20.w, top: 15.h),
                     color: Colors.transparent,
@@ -83,8 +92,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                         backgroundColor: Colors.grey,
                         radius: 50.h,
-                        backgroundImage:
-                            Image.asset("./images/profile.jpg").image)),
+                        backgroundImage: widget.file == null
+                            ? Image.asset("./images/profile.jpg").image
+                            : Image.file(widget.file!).image)),
               ),
             ),
             SizedBox(height: 20.h),
@@ -99,9 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(10),
                       primary: const Color(0xffe93f3f)),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const EditProfileScreen(
-                            name: "Nilupul",
-                            email: "nilupul@gmail.com",
+                      builder: (context) => EditProfileScreen(
+                            name: widget.name,
+                            email: widget.email,
                             bio: "",
                           ))),
                   child: const Text("Edit",
@@ -128,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Align(
             alignment: Alignment.bottomLeft,
-            child: Text("Username:  Nilupul",
+            child: Text("Username:  " + widget.name,
                 style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 18,
@@ -137,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(height: 10.h),
           Align(
             alignment: Alignment.bottomLeft,
-            child: Text("Email:  nilupul@gmail.com",
+            child: Text("Email:  " + widget.email,
                 style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 18,
